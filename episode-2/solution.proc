@@ -1,0 +1,71 @@
+int x = 40;
+int y = 40;
+
+int vertical = 0;
+int horizontal = 0;
+
+PImage img;
+
+void setup()
+{
+	size(800, 600);
+	background(0, 0, 0);
+	frameRate(60);
+	noStroke();
+	
+	img = loadImage("https://cdn.discordapp.com/attachments/501403541349466112/504696482021244942/NGONSpaceship.png", "png");
+}
+
+void SpaceShip()
+{
+	image(img, x, y, 256, 256);
+}
+
+void keyTyped()
+{
+	if(key == 'd')
+	{
+		horizontal = 1;
+	}
+	else if(key == 'a')
+	{
+		horizontal = -1;
+	}
+	else if(key == 'w')
+	{
+		vertical = -1;
+	}
+	else if(key == 's')
+	{
+		vertical = 1;
+	}
+}
+
+void keyReleased()
+{
+	if(key == 'd' && horizontal > 0)
+	{
+		horizontal = 0;
+	}
+	else if(key == 'a' && horizontal < 0)
+	{
+		horizontal = 0;
+	}
+	else if(key == 'w' && vertical < 0)
+	{
+		vertical = 0;
+	}
+	else if(key == 's' && vertical > 0)
+	{
+		vertical = 0;
+	}
+}
+
+void draw()
+{
+	x = x + horizontal;
+	y = y + vertical;
+	
+	clear();
+	SpaceShip();
+}
