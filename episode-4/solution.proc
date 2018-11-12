@@ -1,0 +1,35 @@
+class Color
+{
+	int red;
+	int green;
+	int blue;
+	
+	Color(int newRed, int newGreen, int newBlue)
+	{
+		red = newRed;
+		green = newGreen
+		blue = newBlue;
+	}
+}
+
+Color tree = new Color(55, 55, 55);
+
+Color ChangeColor(Color newColor)
+{
+	Color changedColor = newColor;
+	changedColor.red = changedColor.red * 4;
+	changedColor.green = changedColor.green * 2;
+	changedColor.blue = changedColor.blue * 2;
+	return changedColor;
+}
+
+void setup()
+{
+	size(800, 600);
+	Color newTree = ChangeColor(tree);
+	background(newTree.red, newTree.green, newTree.blue);
+}
+
+void draw()
+{
+}
