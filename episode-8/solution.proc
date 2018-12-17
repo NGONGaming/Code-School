@@ -1,0 +1,74 @@
+Box spaceShip = new Box(40, 50, 32, 32);
+Box[] bullets = new Box[500];
+int currentBullet = 0;
+
+Box[] enemies = new Box[250];
+for(int i = 0; i < enemies.length; i++)
+{
+	enemies[i] = new Box(random(0, 800), random(0, 600), 32, 32);
+}
+
+void setup()
+{
+	size(800, 600);
+	background(0, 0, 0);
+	frameRate(60);
+	noStroke();
+}
+
+void keyTyped()
+{
+	spaceShip.OnKeyTyped(key);
+	
+	if(key == ' ')
+	{
+		bullets[currentBullet] = new Box(spaceShip.x, spaceShip.y, 8, 16);
+		bullets[currentBullet].SetHorizontal(random(-5,5));
+		bullets[currentBullet].SetVertical(random(-5,5));
+
+		currentBullet = currentBullet + 1;
+		if(currentBullet == bullets.length)
+		{
+			currentBullet = 0;
+		}
+	}
+}
+
+void keyReleased()
+{
+	spaceShip.OnKeyReleased(key);
+}
+
+void draw()
+{
+	clear();
+	fill(0, 255, 0);
+	spaceShip.Update(enemies);
+	spaceShip.Draw();
+	
+	fill(50, 50, 50);
+	for(Box bullet : bullets)
+	{
+		if(bullet != null)
+		{
+			bullet.Update([]);
+			bullet.Draw();
+		}
+	}
+	
+	fill(255, 0, 0);
+	for(int i = 0; i < enemies.length; i++)
+	{
+		if(enemies[i] != null)
+		{
+			bool collision = enemies[i].Update(bullets);
+			if(collision)
+			{
+				enemies[i] = null;
+				continue;
+			}
+			
+			enemies[i].Draw();
+		}
+	}
+}
