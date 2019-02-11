@@ -1,0 +1,40 @@
+Player bob = new Player(32, 32);
+Enemies enemies = new Enemies(20);
+
+void setup()
+{
+	size(800, 600);
+	background(0, 0, 0);
+	frameRate(60);
+	noStroke();
+}
+
+void keyTyped()
+{
+	bob.OnKeyTyped(key);
+}
+
+void keyReleased()
+{
+	bob.OnKeyReleased(key);
+}
+
+void draw()
+{
+	clear();
+	
+	if(enemies.myAliveCount > 0)
+	{
+		bob.Update([]);
+		enemies.Update(bob.myBullets);
+	}
+	else
+	{
+		fill(255, 255, 255);
+		textSize(256);
+		text("Win!", 100, 200);
+	}
+	
+	bob.Draw();
+	enemies.Draw();
+}

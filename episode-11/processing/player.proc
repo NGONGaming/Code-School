@@ -1,0 +1,65 @@
+class Player
+{
+	Box myBox;
+	Box[] myBullets;
+	int myCurrentBullet;
+	
+	Player(int aX, int aY)
+	{
+		myBox = new Box(aX, aY, 32, 32);
+		myBullets = new Box[500];
+		myCurrentBullet = 0;
+	}
+
+	bool Update(Box[] aCollision)
+	{
+		myBox.Update(aCollision);
+		
+		for(Box bullet : myBullets)
+		{
+			if(bullet != null)
+			{
+				bullet.Update([]);
+			}
+		}
+	}
+
+	void Draw()
+	{
+		fill(0, 255, 0);
+		myBox.Draw();
+		
+		fill(50, 50, 50);
+		for(Box bullet : myBullets)
+		{
+			if(bullet != null)
+			{
+				bullet.Draw();
+			}
+		}
+	}
+
+	void OnKeyTyped(char aKey)
+	{
+		myBox.OnKeyTyped(aKey);
+		
+		if(aKey == ' ')
+		{
+			myBullets[myCurrentBullet] = new Box(myBox.x, myBox.y, 8, 16);
+			myBullets[myCurrentBullet].SetHorizontal(random(-5,5));
+			myBullets[myCurrentBullet].SetVertical(random(-5,5));
+
+			myCurrentBullet = myCurrentBullet + 1;
+			if(myCurrentBullet == myBullets.length)
+			{
+				myCurrentBullet = 0;
+			}
+		}
+	}
+
+	void OnKeyReleased(char aKey)
+	{
+		myBox.OnKeyReleased(aKey);
+	}
+
+}

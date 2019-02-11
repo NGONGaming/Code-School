@@ -1,0 +1,43 @@
+class Enemies
+{
+	Box[] myEnemies;
+	int myAliveCount;
+	
+	Enemies(int aCount)
+	{
+		myAliveCount = aCount;
+		myEnemies = new Box[aCount];
+		for(int i = 0; i < myEnemies.length; i++)
+		{
+			myEnemies[i] = new Box(random(0, 800), random(0, 600), 32, 32);
+		}
+	}
+
+	bool Update(Box[] aCollision)
+	{
+		for(int i = 0; i < myEnemies.length; i++)
+		{
+			if(myEnemies[i] != null)
+			{
+				bool collision = myEnemies[i].Update(aCollision);
+				if(collision)
+				{
+					myEnemies[i] = null;
+					myAliveCount--;
+				}
+			}
+		}
+	}
+
+	void Draw()
+	{
+		fill(255, 0, 0);
+		for(int i = 0; i < myEnemies.length; i++)
+		{
+			if(myEnemies[i] != null)
+			{
+				myEnemies[i].Draw();
+			}
+		}
+	}
+}

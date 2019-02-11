@@ -1,0 +1,130 @@
+bool IsPointInsideBox(int x, int y, Box aBox)
+{
+	bool isXInside = x >= aBox.x && x <= aBox.x + aBox.width;
+	bool isYInside = y >= aBox.y && y <= aBox.y + aBox.height;
+	
+	return isXInside && isYInside;
+}
+
+bool IsBoxInsideBoxes(int aX, int aY, int aWidth, int aHeight, Box[] aCollision)
+{
+	for(Box box : aCollision)
+	{
+		if(box == null)
+		{
+			continue;
+		}
+		
+		bool topLeftCollision = IsPointInsideBox(aX, aY, box);
+		bool topRightCollision = IsPointInsideBox(aX + aWidth, aY, box);
+		bool bottomLeftCollision = IsPointInsideBox(aX, aY + aHeight, box);
+		bool bottomRightCollision = IsPointInsideBox(aX + aWidth, aY + aHeight, box);
+
+		bool isCollision = topLeftCollision || topRightCollision || bottomLeftCollision || bottomRightCollision;
+		if(isCollision)
+		{
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+class Box
+{
+	int x;
+	int y;
+	
+	int height;
+	int width;
+	
+	int vertical;
+	int horizontal;
+	
+	Box(int aX, int aY, int aHeight, int aWidth)
+	{
+		x = aX;
+		y = aY;
+		
+		height = aHeight;
+		width = aWidth;
+		
+		vertical = 0;
+		horizontal = 0;
+	}
+	
+	void Draw()
+	{
+		pushMatrix();
+		translate(x, y, -100);
+		box(width, height, 32);
+		popMatrix();
+	}
+	
+	bool Update(Box[] aCollision)
+	{
+		bool isXCollision = IsBoxInsideBoxes(x + horizontal, y, width, height, aCollision);
+		if(!isXCollision)
+		{
+			x = x + horizontal;
+		}
+		
+		bool isYCollision = IsBoxInsideBoxes(x, y + vertical, width, height, aCollision);
+		if(!isYCollision)
+		{
+			y = y + vertical;
+		}
+		
+		return isXCollision || isYCollision;
+	}
+	
+	void SetHorizontal(int aDistance)
+	{
+		horizontal = aDistance;
+	}
+	
+	void SetVertical(int aDistance)
+	{
+		vertical = aDistance;
+	}
+	
+	void OnKeyTyped(char aKey)
+	{
+		if(aKey == 'd')
+		{
+			horizontal = 1;
+		}
+		else if(aKey == 'a')
+		{
+			horizontal = -1;
+		}
+		else if(aKey == 'w')
+		{
+			vertical = -1;
+		}
+		else if(aKey == 's')
+		{
+			vertical = 1;
+		}
+	}
+	
+	void OnKeyReleased(char aKey)
+	{
+		if(aKey == 'd' && horizontal > 0)
+		{
+			horizontal = 0;
+		}
+		else if(aKey == 'a' && horizontal < 0)
+		{
+			horizontal = 0;
+		}
+		else if(aKey == 'w' && vertical < 0)
+		{
+			vertical = 0;
+		}
+		else if(aKey == 's' && vertical > 0)
+		{
+			vertical = 0;
+		}
+	}
+}
